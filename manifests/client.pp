@@ -38,7 +38,7 @@
 #
 # === Actions
 # - устанавливает пакет zabbix-agent / install 'zabbix-agent' package
-# - создает конфигурационный файл / create config file 
+# - создает конфигурационный файл / create config file
 # - запускает и контролирует демон zabbix-agent / run and control zabbix-agent daemon
 #
 # === Examples
