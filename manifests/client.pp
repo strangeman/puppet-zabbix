@@ -5,35 +5,35 @@
 # This class provide zabbix agent configuration
 #
 # === Parameters
-# [*zabbix_server*] 
+# [*zabbix_server*]
 #   String of comma delimited IP addresses (or hostnames) of ZABBIX servers.
-# [*server_port*] 
+# [*server_port*]
 #   Server port for sending active checks.
-# [*hostname*] 
-#   REGUIRED! Unique hostname. Required for active checks. 
-# [*listen_port*] 
+# [*hostname*]
+#   REGUIRED! Unique hostname. Required for active checks.
+# [*listen_port*]
 #   Listen port. Default is 10050.
-# [*listen_ip*] 
+# [*listen_ip*]
 #   IP address to bind agent. If 'false', bind to all available IPs
-# [*start_agents*] 
+# [*start_agents*]
 #   Number of pre-forked instances of zabbix_agentd. 1-16
-# [*refresh_active_checks*] 
+# [*refresh_active_checks*]
 #   How often refresh list of active checks. 2 minutes by default.
-# [*disable_active_checks*] 
+# [*disable_active_checks*]
 #   Disable active checks. The agent will work in passive mode listening server.
-# [*enable_remote_commands*] 
+# [*enable_remote_commands*]
 #   Enable remote commands for ZABBIX agent. By default remote commands disabled.
-# [*debug_level*] 
+# [*debug_level*]
 #   Specifies debug level.
-# [*pid_file*] 
+# [*pid_file*]
 #   Name of PID file.
-# [*log_file*] 
+# [*log_file*]
 #   Name of log file. If not set, syslog will be used.
-# [*log_file_size*] 
+# [*log_file_size*]
 #   Maximum size of log file in MB. Set to 0 to disable automatic log rotation.
-# [*time_out*] 
+# [*time_out*]
 #   Spend no more than Timeout seconds on processing. Must be between 1 and 30.
-# [*user_parameters*] 
+# [*user_parameters*]
 #   List of user-defined monitoring parameters.
 #
 # === Actions
@@ -82,7 +82,7 @@ class zabbix::client(
         $conf_pid_file = '/var/run/zabbix/zabbix_agentd.pid'
       }
       default: {
-        fail("Module zabbix is not supported on ${operatingsystem}")
+        fail("Module zabbix is not supported on ${::operatingsystem}")
       }
     }
   }
