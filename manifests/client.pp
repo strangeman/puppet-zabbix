@@ -52,62 +52,62 @@
 # Anton Markelov <doublic@gmail.com> <markelovaa@dalstrazh.ru>
 #
 class zabbix::client(
-    $zabbix_server          = 'zabbix.localnet',
-    $server_port            = '10051',
-    $hostname               = false,
-    $listen_port            = '10050',
-    $listen_ip              = false,
-    $start_agents           = 5,
-    $refresh_active_checks  = 120,
-    $disable_active_checks  = 0,
-    $enable_remote_commands = 0,
-    $debug_level            = 3,
-    $pid_file               = false,
-    $log_file               = '/var/log/zabbix-agent/zabbix_agentd.log',
-    $log_file_size          = 1,
-    $time_out               = 3,
-    $user_parameters        = false
-) {
+  $zabbix_server          = 'zabbix.localnet',
+  $server_port            = '10051',
+  $hostname               = false,
+  $listen_port            = '10050',
+  $listen_ip              = false,
+  $start_agents           = 5,
+  $refresh_active_checks  = 120,
+  $disable_active_checks  = 0,
+  $enable_remote_commands = 0,
+  $debug_level            = 3,
+  $pid_file               = false,
+  $log_file               = '/var/log/zabbix-agent/zabbix_agentd.log',
+  $log_file_size          = 1,
+  $time_out               = 3,
+  $user_parameters        = false
+  ) {
 
-    if $hostname == false {
-        fail('Module zabbix: hostname parameter required!')
-    }
+  if $hostname == false {
+    fail('Module zabbix: hostname parameter required!')
+  }
 
-    if $pid_file == false {
-        case $::lsbdistid {
-            'debian': {
-                $conf_pid_file = '/var/run/zabbix-agent/zabbix_agentd.pid'
-            }
-            'ubuntu': {
-                $conf_pid_file = '/var/run/zabbix/zabbix_agentd.pid'
-            }
-            default: {
-                fail("Module zabbix is not supported on ${operatingsystem}")
-            }
-        }
+  if $pid_file == false {
+    case $::lsbdistid {
+      'debian': {
+        $conf_pid_file = '/var/run/zabbix-agent/zabbix_agentd.pid'
+      }
+      'ubuntu': {
+        $conf_pid_file = '/var/run/zabbix/zabbix_agentd.pid'
+      }
+      default: {
+        fail("Module zabbix is not supported on ${operatingsystem}")
+      }
     }
-    else {
-        $conf_pid_file = $pid_file
-    }
+  }
+else {
+  $conf_pid_file = $pid_file
+}
 
-    #install zabbix
-    package{'zabbix-agent':
-            ensure => installed,
-    }
+  #install zabbix
+  package{'zabbix-agent':
+    ensure => installed,
+  }
 
-    file {'/etc/zabbix/zabbix_agentd.conf':
-            content => template("zabbix/zabbix_agentd.conf.erb"),
-            owner => 'root',
-            group => 'root',
-            mode => '0644',
-    }
+  file {'/etc/zabbix/zabbix_agentd.conf':
+    content => template('zabbix/zabbix_agentd.conf.erb'),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+  }
 
-    service {'zabbix-agent':
-            ensure => running,
-            enable => true,
-            hasrestart => true,
-            hasstatus => true,
-    }
+  service {'zabbix-agent':
+    ensure     => running,
+    enable     => true,
+    hasrestart => true,
+    hasstatus  => true,
+  }
 
-    Package['zabbix-agent']->File['/etc/zabbix/zabbix_agentd.conf']~>Service['zabbix-agent']
+  Package['zabbix-agent']->File['/etc/zabbix/zabbix_agentd.conf']~>Service['zabbix-agent']
 }
